@@ -76,4 +76,4 @@ class Cli:
 #     typer.echo(f"updating {position}, {task}, {category}")
 
 if __name__ == "__main__":
-    c = Cli()
+	pass

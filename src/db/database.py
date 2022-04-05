@@ -42,7 +42,7 @@ class DataBaseHandler():
             self.connection_status = True
         except Exception as e:
             raise ConnectionError()
-    
+
     def create_table(self):
         try:
             if not self.connection_status:
