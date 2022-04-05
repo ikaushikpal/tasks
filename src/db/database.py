@@ -1,7 +1,7 @@
 import sqlite3
 from typing import List, Optional
 import datetime
-from model import Task
+from src.db.model import Task
 from pathlib import Path
 try:
     from exceptions import exception
@@ -65,11 +65,17 @@ class DataBaseHandler():
         try:
             if not self.connection_status:
                 raise exception.ConnectionError()
-            with self.conn:
-                self.cursor.execute('INSERT INTO tasks(title, date_added, status, category, priority, date_completed, desc) VALUES (:title, :date_added, :status, :category, :priority, :date_completed, :desc)',
-                {'title': task.title, 'date_added':task.date_added,'status': task.status, 
-                'category': task.category, 'priority': task.priority, 'date_completed': task.date_completed, 'desc': task.desc})
+            task_id = None
+            # with self.conn:
+            self.cursor.execute('INSERT INTO tasks(title, date_added, status, category, priority, date_completed, desc) VALUES (:title, :date_added, :status, :category, :priority, :date_completed, :desc)',
+            {'title': task.title, 'date_added':task.date_added,'status': task.status, 
+            'category': task.category, 'priority': task.priority, 'date_completed': task.date_completed, 'desc': task.desc})
             self.conn.commit()
+            self.cursor.execute('SELECT last_insert_rowid()')
+            task_id = self.cursor.fetchall()[0][0]
+            self.conn.commit()
+            # self.conn.close()
+            return task_id
         except Exception as e:
             raise exception.DataBaseWriteError(str(e))
 
