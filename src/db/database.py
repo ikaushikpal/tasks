@@ -6,10 +6,10 @@ from pathlib import Path
 try:
     from exceptions import exception
 except ModuleNotFoundError:
-    import importlib.util
+    import importlib.util       
     spec = importlib.util.spec_from_file_location(
     "exception", Path(__file__).parent.parent / "exceptions/exception.py")
-    exception = importlib.util.module_from_spec(spec)
+    exception = importlib.util.module_from_spec(spec)       
     spec.loader.exec_module(exception)
 
 
@@ -70,7 +70,6 @@ class DataBaseHandler():
                 {'title': task.title, 'date_added':task.date_added,'status': task.status, 
                 'category': task.category, 'priority': task.priority, 'date_completed': task.date_completed, 'desc': task.desc})
             self.conn.commit()
-
         except Exception as e:
             raise exception.DataBaseWriteError(str(e))
 
@@ -78,7 +77,6 @@ class DataBaseHandler():
         try:
             if not self.connection_status:
                 raise exception.ConnectionError()
-
             with self.conn:
                 self.cursor.execute('SELECT * FROM tasks')
                 results = self.cursor.fetchall()
